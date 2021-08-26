@@ -18,7 +18,7 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/api/v1/resources/books/all', methods=['GET'])
+@app.route('/api/v1/resources/books/all', methods=['GET','POST'])
 def api_all():
     conn = sqlite3.connect('books.db')
     conn.row_factory = dict_factory
@@ -34,13 +34,12 @@ def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found.</p>", 404
 
 
-@app.route('/api/v1/resources/books', methods=['GET'])
+@app.route('/api/v1/resources/books', methods=['GET','POST'])
 def api_filter():
-    query_parameters = request.args
-
-    id = query_parameters.get('id')
-    published = query_parameters.get('published')
-    author = query_parameters.get('author')
+    
+    id = request.form('id')
+    published = request.form('year')
+    author = request.form('author')
 
     query = "SELECT * FROM books WHERE"
     to_filter = []
